@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 abstract class StudentListEvent extends Equatable {
@@ -8,11 +7,17 @@ abstract class StudentListEvent extends Equatable {
 
 class AddStudentEvent extends StudentListEvent {
   final String name;
+  final int age;
+  final String address;
 
-  AddStudentEvent(this.name);
+  AddStudentEvent({
+    required this.name,
+    required this.age,
+    required this.address,
+  });
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [name, age, address];
 }
 
 class RemoveStudentEvent extends StudentListEvent {
