@@ -10,77 +10,93 @@ class AreaOfCircleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Area of Circle', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.teal,
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Card(
-          margin: EdgeInsets.all(20),
-          elevation: 5,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Calculate the Area of a Circle',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.teal.shade300, Colors.teal.shade900],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: Card(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            elevation: 8,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Calculate Area of a Circle',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal.shade800,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _radiusController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter Radius',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.circle, color: Colors.blueAccent),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _radiusController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Enter Radius',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      prefixIcon: Icon(Icons.circle, color: Colors.teal.shade700),
+                    ),
+                    style: TextStyle(fontSize: 18),
                   ),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    final radius = double.tryParse(_radiusController.text);
-                    if (radius != null) {
-                      context.read<AreaOfCircleBloc>().add(CalculateAreaEvent(radius));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Please enter a valid number.')),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      final radius = double.tryParse(_radiusController.text);
+                      if (radius != null) {
+                        context.read<AreaOfCircleBloc>().add(CalculateAreaEvent(radius));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please enter a valid number.')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white, padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25), backgroundColor: Colors.orange.shade600,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      elevation: 5,
+                    ),
+                    child: Text(
+                      'Calculate Area',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                    child: Text('Calculate Area', style: TextStyle(fontSize: 16)),
+                  SizedBox(height: 20),
+                  BlocBuilder<AreaOfCircleBloc, double>(
+                    builder: (context, area) {
+                      return Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.teal.shade100,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          'Calculated Area: ${area.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal.shade900,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
                   ),
-                ),
-                SizedBox(height: 20),
-                BlocBuilder<AreaOfCircleBloc, double>(
-                  builder: (context, area) {
-                    return Text(
-                      'Calculated Area: ${area.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
-                    );
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
