@@ -17,6 +17,7 @@ class StudentListScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Input fields for name, age, and address
             TextField(
               controller: _nameController,
               decoration: InputDecoration(labelText: 'Enter Student Name'),
@@ -33,6 +34,7 @@ class StudentListScreen extends StatelessWidget {
               decoration: InputDecoration(labelText: 'Enter Student Address'),
             ),
             SizedBox(height: 20),
+            // Buttons to add or remove students
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -69,21 +71,36 @@ class StudentListScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20),
-            BlocBuilder<StudentListBloc, List<Student>>(
-              builder: (context, studentList) {
-                return Expanded(
-                  child: ListView.builder(
+            // Displaying the list of students
+            Expanded(
+              child: BlocBuilder<StudentListBloc, List<Student>>(
+                builder: (context, studentList) {
+                  if (studentList.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'No students added yet.',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
                     itemCount: studentList.length,
                     itemBuilder: (context, index) {
                       final student = studentList[index];
-                      return ListTile(
-                        title: Text(student.name),
-                        subtitle: Text('Age: ${student.age}, Address: ${student.address}'),
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: Text(student.name[0]),
+                          ),
+                          title: Text(student.name),
+                          subtitle: Text('Age: ${student.age}\nAddress: ${student.address}'),
+                        ),
                       );
                     },
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ],
         ),
